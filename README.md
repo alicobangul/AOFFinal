@@ -1,9 +1,11 @@
 # AOFFinal Hesaplama
 
 <ul>
+<li>MVP</li>
+<br />
 <li>RxJava</li>
+<li>Hilt</li>
 <li>Room</li>
-<li>viewBinding</li>
 <br />
 <li>inApp-Review</li>
 <li>inApp-Update</li>
