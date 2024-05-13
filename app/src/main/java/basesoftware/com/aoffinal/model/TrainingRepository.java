@@ -171,7 +171,8 @@ public class TrainingRepository {
                 int requiredQuestion = Math.max((int) calculateResult / 5, 0);
 
                 // Çıktı yazısı hazırlanıyor
-                String result = String.format(Locale.getDefault(), "Gereken Not : %d - Gereken Soru (20 üzerinden) : %d", requiredScore, requiredQuestion);
+                String result = (requiredScore > 100) ? "Gereken Not : +100 (KALDINIZ) - Gereken Soru (20 üzerinden) : +20 (KALDINIZ)" :
+                        String.format(Locale.getDefault(), "Gereken Not : %d - Gereken Soru (20 üzerinden) : %d", requiredScore, requiredQuestion);
 
                 // Ekranda gösterilecek listeye çıktı eklendi
                 trainingModel.resultDataChanged(i, result);
