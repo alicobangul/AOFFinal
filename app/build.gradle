@@ -1,0 +1,101 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+}
+
+android {
+
+    namespace 'basesoftware.com.aoffinal'
+
+    defaultConfig {
+        applicationId "basesoftware.com.aoffinal"
+        minSdk 21
+        targetSdk 34
+        compileSdk 34
+        versionCode 16
+        versionName "1.6"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        resValue "string", "APPID", APPID
+        resValue "string", "BANNERID", BANNERID
+        resValue "string", "BANNERTEST", BANNERTEST
+
+    }
+
+    buildTypes {
+
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            resValue "string", "APPID", APPID
+            resValue "string", "BANNERID", BANNERID
+            resValue "string", "BANNERTEST", BANNERTEST
+        }
+
+        debug {
+            resValue "string", "APPID", APPID
+            resValue "string", "BANNERID", BANNERID
+            resValue "string", "BANNERTEST", BANNERTEST
+        }
+
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    buildFeatures {
+        viewBinding = true
+        dataBinding = true
+        buildConfig = true
+    }
+
+}
+
+dependencies {
+
+    def playCore = "1.10.0"
+    def playServicesAds = "22.6.0"
+    def workRuntime ="2.9.0"
+    def material = "1.12.0"
+    def room_version = "2.5.0"
+    def hilt_version = "2.38.1"
+    def gson = "2.10.1"
+    def splash_screen = "1.0.1"
+
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    implementation 'androidx.activity:activity-ktx:1.9.0'
+
+    implementation "androidx.core:core-splashscreen:$splash_screen"
+
+    implementation "com.google.android.play:core:$playCore"
+
+    implementation "com.google.android.gms:play-services-ads:$playServicesAds"
+    implementation "androidx.work:work-runtime:$workRuntime"
+
+    implementation "com.google.android.material:material:$material"
+
+    implementation "com.google.code.gson:gson:$gson"
+
+
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-rxjava2:$room_version"
+    implementation "io.reactivex.rxjava2:rxandroid:2.0.1"
+
+
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+
+}
