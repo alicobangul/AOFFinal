@@ -7,14 +7,14 @@ import com.google.android.gms.ads.MobileAds;
 import javax.inject.Inject;
 import basesoftware.com.aoffinal.R;
 import basesoftware.com.aoffinal.databinding.ActivityMainBinding;
-import basesoftware.com.aoffinal.impl.Contract;
+import basesoftware.com.aoffinal.impl.IContract;
 import basesoftware.com.aoffinal.model.domain.TrainingModel;
 import basesoftware.com.aoffinal.presenter.Presenter;
 import basesoftware.com.aoffinal.util.WorkUtil;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class MainActivity extends AppCompatActivity implements Contract.View {
+public class MainActivity extends AppCompatActivity implements IContract.IView {
 
     private ActivityMainBinding binding;
 
@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity implements Contract.View {
 
     @Inject
     WorkUtil workUtil;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +35,14 @@ public class MainActivity extends AppCompatActivity implements Contract.View {
 
         btnListener();
 
-        checkAppUpdate();
+        checkUpdateThenStart();
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.detach();
     }
 
     private void init() {
@@ -48,13 +53,15 @@ public class MainActivity extends AppCompatActivity implements Contract.View {
 
         binding.setViews(this);
 
+        binding.setLifecycleOwner(this);
+
         initAds();
 
     }
 
     public void btnListener() {
 
-        binding.btnCalculate.setOnClickListener(v -> presenter.calculateClick());
+        binding.btnCalculate.setOnClickListener(v -> presenter.calculateClick(binding.getTrainingModel()));
 
         binding.btnClearData.setOnClickListener(v -> workUtil.showQuestionSnackbar(getString(R.string.deleteQuestion), action -> presenter.deleteSavedDataInDb()));
 
@@ -67,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements Contract.View {
     public void updateView(TrainingModel trainingModel) { binding.setTrainingModel(trainingModel); }
 
     @Override
-    public void textChanged(Integer viewTag, String viewText) { presenter.textChanged(viewTag, viewText); }
+    public void textChanged(Integer viewTag, String viewText) { presenter.textChanged(binding.getTrainingModel(), viewTag, viewText); }
 
     private void initAds() {
 
@@ -77,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements Contract.View {
 
     }
 
-    public void checkAppUpdate() { workUtil.inAppUpdate(); }
+    public void checkUpdateThenStart() { workUtil.inAppUpdate(); }
 
     @Override
     public void saveQuestion() { workUtil.showQuestionSnackbar(getString(R.string.saveQuestion), v -> presenter.saveData()); }

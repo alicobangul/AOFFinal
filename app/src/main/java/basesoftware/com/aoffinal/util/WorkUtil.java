@@ -21,7 +21,7 @@ import com.google.android.play.core.tasks.Task;
 import javax.inject.Inject;
 import basesoftware.com.aoffinal.R;
 import basesoftware.com.aoffinal.databinding.QuestionSnackbarBinding;
-import basesoftware.com.aoffinal.impl.Contract;
+import basesoftware.com.aoffinal.impl.IContract;
 import dagger.hilt.android.scopes.ActivityScoped;
 
 @ActivityScoped
@@ -29,12 +29,12 @@ public class WorkUtil {
 
     private final Activity activity;
 
-    private Contract.View view;
+    private IContract.IView view;
 
     @Inject
     public WorkUtil(Activity activity) { this.activity = activity; }
 
-    public void initBinds(Contract.View view) { this.view = view; }
+    public void initBinds(IContract.IView view) { this.view = view; }
 
     public void showSnackbar(String message) {
 

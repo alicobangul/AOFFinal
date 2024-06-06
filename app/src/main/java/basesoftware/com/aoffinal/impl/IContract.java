@@ -1,10 +1,13 @@
 package basesoftware.com.aoffinal.impl;
 
+import javax.annotation.Nullable;
+
 import basesoftware.com.aoffinal.model.domain.TrainingModel;
+import basesoftware.com.aoffinal.model.roomdb.TrainingDbModel;
 
-public interface Contract {
+public interface IContract {
 
-    interface View {
+    interface IView {
 
         void checkSavedDataInDb();
 
@@ -22,11 +25,11 @@ public interface Contract {
 
     }
 
-    interface Presenter {
+    interface IPresenter {
 
-        void initBinds(Contract.View view);
+        void initBinds(IView view);
 
-        void calculateClick();
+        void calculateClick(TrainingModel trainingModel);
 
         void checkSavedDataInDb();
 
@@ -36,13 +39,8 @@ public interface Contract {
 
         void updateView(TrainingModel trainingModel);
 
-        void textChanged(Integer viewTag, String viewText);
+        void textChanged(TrainingModel trainingModel, Integer viewTag, String viewText);
 
-        void calculateComplete();
-
-        void saveResult(Boolean isSuccess);
-
-        void deleteResult(Boolean isSuccess);
     }
 
 }

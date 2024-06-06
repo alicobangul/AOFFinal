@@ -1,6 +1,8 @@
 package basesoftware.com.aoffinal.model.domain;
 
 import androidx.databinding.ObservableArrayList;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 public class TrainingModel {
 
@@ -8,11 +10,11 @@ public class TrainingModel {
 
     private ObservableArrayList<String> arrayTrainingResult;
 
-    private String midtermExam = "";
+    private final MutableLiveData<String> midtermExam = new MutableLiveData<>("");
 
-    private String finalExam = "";
+    private final MutableLiveData<String> finalExam = new MutableLiveData<>("");
 
-    private String average = "";
+    private final MutableLiveData<String> average = new MutableLiveData<>("");
 
     public TrainingModel() {
 
@@ -37,25 +39,23 @@ public class TrainingModel {
     public void trainingDataChanged(Integer dataCount, String data) { arrayTraining.set(dataCount, data); }
 
 
+
     public ObservableArrayList<String> getArrayTrainingResult() { return arrayTrainingResult; }
 
     public void setArrayTrainingResult(ObservableArrayList<String> arrayTrainingResult) { this.arrayTrainingResult = arrayTrainingResult; }
 
-    public void resultDataChanged(Integer resultCount, String data) { arrayTrainingResult.set(resultCount, data); }
 
 
+    public LiveData<String> getMidtermExam() { return midtermExam; }
 
+    public void setMidtermExam(String midtermExam) { this.midtermExam.setValue(midtermExam); }
 
-    public String getMidtermExam() { return midtermExam; }
+    public LiveData<String> getFinalExam() { return finalExam; }
 
-    public void setMidtermExam(String midtermExam) { this.midtermExam = midtermExam; }
+    public void setFinalExam(String finalExam) { this.finalExam.setValue(finalExam); }
 
-    public String getFinalExam() { return finalExam; }
+    public LiveData<String> getAverage() { return average; }
 
-    public void setFinalExam(String finalExam) { this.finalExam = finalExam; }
-
-    public String getAverage() { return average; }
-
-    public void setAverage(String average) { this.average = average; }
+    public void setAverage(String average) { this.average.setValue(average); }
 
 }
