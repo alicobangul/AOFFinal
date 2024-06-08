@@ -2,7 +2,7 @@ package basesoftware.com.aoffinal.impl;
 
 import javax.annotation.Nullable;
 
-import basesoftware.com.aoffinal.model.roomdb.TrainingDbModel;
+import basesoftware.com.aoffinal.data.model.TrainingDbModel;
 
 public interface IModelObserver {
 

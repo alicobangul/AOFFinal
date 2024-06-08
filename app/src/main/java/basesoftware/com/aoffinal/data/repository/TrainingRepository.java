@@ -1,13 +1,13 @@
-package basesoftware.com.aoffinal.model;
+package basesoftware.com.aoffinal.data.repository;
 
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import basesoftware.com.aoffinal.impl.IModelObserver;
-import basesoftware.com.aoffinal.model.domain.TrainingModel;
-import basesoftware.com.aoffinal.model.roomdb.TrainingDao;
-import basesoftware.com.aoffinal.model.roomdb.TrainingDbModel;
+import basesoftware.com.aoffinal.domain.model.TrainingModel;
+import basesoftware.com.aoffinal.data.local.TrainingDao;
+import basesoftware.com.aoffinal.data.model.TrainingDbModel;
 import dagger.hilt.android.scopes.ActivityScoped;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;

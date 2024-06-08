@@ -1,10 +1,9 @@
 package basesoftware.com.aoffinal.di;
 
-
 import android.content.Context;
 import androidx.room.Room;
-import basesoftware.com.aoffinal.model.roomdb.TrainingDao;
-import basesoftware.com.aoffinal.model.roomdb.TrainingDatabase;
+import basesoftware.com.aoffinal.data.local.TrainingDao;
+import basesoftware.com.aoffinal.data.local.TrainingDatabase;
 import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;

@@ -1,9 +1,11 @@
-package basesoftware.com.aoffinal.model.roomdb;
+package basesoftware.com.aoffinal.data.local;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+
+import basesoftware.com.aoffinal.data.model.TrainingDbModel;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 

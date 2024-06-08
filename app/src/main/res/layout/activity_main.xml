@@ -5,7 +5,7 @@
 
     <data>
 
-        <variable name="trainingModel" type="basesoftware.com.aoffinal.model.domain.TrainingModel" />
+        <variable name="trainingModel" type="basesoftware.com.aoffinal.domain.model.TrainingModel" />
 
         <variable name="views" type="basesoftware.com.aoffinal.impl.IContract.IView" />
 

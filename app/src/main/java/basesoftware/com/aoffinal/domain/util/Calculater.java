@@ -1,10 +1,8 @@
-package basesoftware.com.aoffinal.presenter;
+package basesoftware.com.aoffinal.domain.util;
 
 import java.text.DecimalFormat;
-
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
-
 import dagger.hilt.android.scopes.ActivityScoped;
 
 @ActivityScoped

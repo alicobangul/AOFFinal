@@ -1,4 +1,4 @@
-package basesoftware.com.aoffinal.presenter;
+package basesoftware.com.aoffinal.domain.presenter;
 
 import android.os.Build;
 import androidx.databinding.ObservableArrayList;
@@ -10,11 +10,14 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+
+import basesoftware.com.aoffinal.domain.util.Calculater;
 import basesoftware.com.aoffinal.impl.IContract;
 import basesoftware.com.aoffinal.impl.IModelObserver;
-import basesoftware.com.aoffinal.model.TrainingRepository;
-import basesoftware.com.aoffinal.model.domain.TrainingModel;
-import basesoftware.com.aoffinal.model.roomdb.TrainingDbModel;
+import basesoftware.com.aoffinal.data.repository.TrainingRepository;
+import basesoftware.com.aoffinal.domain.model.TrainingModel;
+import basesoftware.com.aoffinal.data.model.TrainingDbModel;
+import basesoftware.com.aoffinal.domain.validator.Validator;
 import basesoftware.com.aoffinal.util.Constant;
 import dagger.hilt.android.scopes.ActivityScoped;
 

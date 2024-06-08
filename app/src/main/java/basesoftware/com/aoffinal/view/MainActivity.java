@@ -8,8 +8,8 @@ import javax.inject.Inject;
 import basesoftware.com.aoffinal.R;
 import basesoftware.com.aoffinal.databinding.ActivityMainBinding;
 import basesoftware.com.aoffinal.impl.IContract;
-import basesoftware.com.aoffinal.model.domain.TrainingModel;
-import basesoftware.com.aoffinal.presenter.Presenter;
+import basesoftware.com.aoffinal.domain.model.TrainingModel;
+import basesoftware.com.aoffinal.domain.presenter.Presenter;
 import basesoftware.com.aoffinal.util.WorkUtil;
 import dagger.hilt.android.AndroidEntryPoint;
 

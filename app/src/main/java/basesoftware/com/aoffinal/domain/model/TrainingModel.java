@@ -1,4 +1,4 @@
-package basesoftware.com.aoffinal.model.domain;
+package basesoftware.com.aoffinal.domain.model;
 
 import androidx.databinding.ObservableArrayList;
 import androidx.lifecycle.LiveData;

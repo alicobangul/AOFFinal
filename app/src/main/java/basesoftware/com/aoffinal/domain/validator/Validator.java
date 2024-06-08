@@ -1,4 +1,4 @@
-package basesoftware.com.aoffinal.presenter;
+package basesoftware.com.aoffinal.domain.validator;
 
 import javax.annotation.Nonnull;
 import javax.inject.Inject;

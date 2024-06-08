@@ -1,4 +1,4 @@
-package basesoftware.com.aoffinal.model.roomdb;
+package basesoftware.com.aoffinal.data.model;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
