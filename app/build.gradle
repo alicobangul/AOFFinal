@@ -14,8 +14,8 @@ android {
         minSdk 21
         targetSdk 34
         compileSdk 34
-        versionCode 18
-        versionName "1.8"
+        versionCode 19
+        versionName "1.9"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -58,7 +58,6 @@ android {
 
 dependencies {
 
-    def playCore = "1.10.3"
     def playServicesAds = "23.1.0"
     def workRuntime ="2.9.0"
     def material = "1.12.0"
@@ -66,6 +65,8 @@ dependencies {
     def hilt_version = "2.38.1"
     def gson = "2.10.1"
     def splash_screen = "1.0.1"
+    def inAppReview = "2.0.1"
+    def inAppUpdate = "2.0.1"
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.6.1'
@@ -76,7 +77,8 @@ dependencies {
 
     implementation "androidx.core:core-splashscreen:$splash_screen"
 
-    implementation "com.google.android.play:core:$playCore"
+    implementation "com.google.android.play:review:$inAppReview"
+    implementation "com.google.android.play:app-update:$inAppUpdate"
 
     implementation "com.google.android.gms:play-services-ads:$playServicesAds"
     implementation "androidx.work:work-runtime:$workRuntime"
