@@ -4,8 +4,6 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">@android:color/darker_gray</color>
 
-    <color name="trainingEditText">#868695</color>
-
     <color name="actionButton">#4D4DFF</color>
 
     <color name="hintTextColor">#C0C0C0</color>
