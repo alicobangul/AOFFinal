@@ -14,8 +14,8 @@ android {
         minSdk 24
         targetSdk 36
         compileSdk 35
-        versionCode 21
-        versionName "2.1"
+        versionCode 22
+        versionName "2.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -67,8 +67,6 @@ dependencies {
 
     def hilt_version = "2.38.1"
 
-    def gson = "2.10.1"
-
     def splash_screen = "1.0.1"
 
     def inAppReview = "2.0.1"
@@ -90,8 +88,6 @@ dependencies {
     implementation "androidx.work:work-runtime:$workRuntime"
 
     implementation "com.google.android.material:material:$material"
-
-    implementation "com.google.code.gson:gson:$gson"
 
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"

@@ -1,49 +1,79 @@
 package basesoftware.com.aoffinal.domain.util;
 
-import java.text.DecimalFormat;
+import java.util.ArrayList;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
-import dagger.hilt.android.scopes.ActivityScoped;
+import basesoftware.com.aoffinal.domain.model.CourseModel;
+import basesoftware.com.aoffinal.domain.validator.Validator;
+import dagger.hilt.android.scopes.ViewModelScoped;
 
-@ActivityScoped
+@ViewModelScoped
 public class Calculater {
 
+    private final Validator validator;
+
     @Inject
-    public Calculater() {}
+    public Calculater(Validator validator) { this.validator = validator; }
 
-    public double calculateResult(@Nonnull String training, Double midtermExam, Double finalExam, Integer average) {
+    public ArrayList<CourseModel> calculateCourse(String midtermExamAverage, String finalExamAverage, String successAverage, @Nonnull ArrayList<CourseModel> courses) {
 
-        // Gerekli not hesaplanıyor
-        double calculateResult = (average - (Double.parseDouble(training) * midtermExam)) / finalExam;
+        double midtermAverage = Double.parseDouble(midtermExamAverage);
+        double finalAverage = Double.parseDouble(finalExamAverage);
 
-        /**
-         * Eğer double küsüratı iki haneden büyük ise iki haneye düşürüldü
-         * String tipindeki dönüşte , işareti . ile değiştirildi [double çevirme işlemi için]
-         */
-        calculateResult = Double
-                .parseDouble((
-                        new DecimalFormat((calculateResult < 10.00) ? "#.##" : "##.##")
-                                .format(calculateResult)).replace(",",".")
-                );
+        int success = Integer.parseInt(successAverage);
 
-        // Sonuç küsüratlı sayı, yukarı yuvarlandı örn: 65.10 -> 66 tam sayı
-        if (calculateResult % 1 != 0) calculateResult = Math.ceil(calculateResult);
+        ArrayList<CourseModel> arrayCourse = new ArrayList<>();
 
-        // Sonuç 5'e tam bölünmüyorsa 5 ve katına yuvarla [Her soru 5 puan]
-        if (((int) calculateResult) % 5 > 0) calculateResult = calculateResult + (5 - calculateResult % 5);
+        for (CourseModel course : courses) {
 
-        return calculateResult;
+            Integer courseIndex = course.getCourseIndex();
+            String grade = course.getGrade();
+            String neededGrade = ""; // Gereken puan
+            String requiredQuestionCount = ""; // Gereken soru sayısı
+            int difficultyLevel = 3;
+
+            if(!course.getGrade().matches("")) {
+
+                // Vizenin katkı puanı
+                double midtermContribution = (Double.parseDouble(course.getGrade()) * midtermAverage) / 100.0;
+
+                // Geçmek için gerekli final katkısı
+                double requiredFinalContribution = success - midtermContribution;
+
+                // Gereken final notu
+                double requiredFinalGradeRaw = (requiredFinalContribution * 100.0) / finalAverage;
+
+                // Gereken puan/final notu (Yukarı doğru 5’in katına yuvarla)
+                int roundedFinalGrade = (int) (Math.ceil(requiredFinalGradeRaw / 5.0) * 5);
+
+                // Gereken soru sayısı (Her soru 5 puan)
+                int requiredCorrectAnswers = (int) Math.ceil(roundedFinalGrade / 5.0);
+
+                // Eğer gereken puan/final notu 100'den fazlaysa, gereken puan kısmına KALDINIZ yazdır
+                neededGrade = validator.validateNeededGrade(roundedFinalGrade);
+
+                // Eğer gereken puan 100'den fazlaysa, gereken soru kısmına KALDINIZ yazdır
+                requiredQuestionCount = validator.validateRequiredQuestion(roundedFinalGrade, requiredCorrectAnswers);
+
+                // Gereken nota göre zorluk seviyesini ayarla
+                difficultyLevel = validator.validateDifficultyLevel(roundedFinalGrade);
+
+            }
+
+            CourseModel newCourse = new CourseModel(
+                    courseIndex,
+                    grade,
+                    neededGrade,
+                    requiredQuestionCount,
+                    difficultyLevel
+            );
+
+            arrayCourse.add(newCourse);
+
+        }
+
+        return arrayCourse;
 
     }
-
-    public double midtermCalculate(String midtermExam) { return Double.parseDouble(midtermExam) / 100; }
-
-    public double finalExamCalculate(String finalExam) { return Double.parseDouble(finalExam) / 100; }
-
-    // Gereken Puan (Kullanıcının vize ortalaması eğer geçer notu fazlasıyla karşılıyor ise 0 yaz)
-    public int calculateRequiredScore(double calculateResult) { return Math.max((int) calculateResult, 0); }
-
-    // Gereken soru sayısı (Kullanıcının vize ortalaması eğer geçer notu fazlasıyla karşılıyor ise 0 yaz)
-    public int calculateRequiredQuestion(double calculateResult) { return Math.max((int) calculateResult / 5, 0); }
 
 }

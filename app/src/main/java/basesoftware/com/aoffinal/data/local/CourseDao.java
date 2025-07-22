@@ -4,21 +4,21 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-
-import basesoftware.com.aoffinal.data.model.TrainingDbModel;
+import java.util.List;
+import basesoftware.com.aoffinal.data.repository.dto.CourseDbModel;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 
 @Dao
-public interface TrainingDao {
+public interface CourseDao {
 
-    @Query("SELECT * FROM TrainingTable")
-    Single<TrainingDbModel> getAll();
+    @Query("SELECT * FROM CourseTable")
+    Single<List<CourseDbModel>> getAll();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    Completable insert(TrainingDbModel trainingDbModel);
+    Completable insert(List<CourseDbModel> courses);
 
-    @Query("DELETE FROM TrainingTable")
+    @Query("DELETE FROM CourseTable")
     Completable deleteAll();
 
 }

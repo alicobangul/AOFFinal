@@ -1,8 +1,8 @@
 <resources>
 
-    <string name="app_name">AOF Final Hesaplama</string>
+    <string name="app_name">AÖF Final Hesaplama</string>
 
-    <string name="app_page">https://play.google.com/store/apps/details?id=basesoftware.com.aoffinal</string>
+    <string name="app_market_page_link">https://play.google.com/store/apps/details?id=basesoftware.com.aoffinal</string>
 
     <string name="yes">EVET</string>
     <string name="no">HAYIR</string>
@@ -15,10 +15,6 @@
 
     <string name="deleteSuccess">Notlar başarıyla silindi</string>
     <string name="deleteFailed">HATA, notlar silinemedi</string>
-
-    <string name="visitStoreQuestion">Hata oluştu. Mağazamızı ziyaret etmek ister misiniz ? (Harici bağlantı açılacak)</string>
-
-    <string name="thanksForComment">Değerlendirmeniz için teşekkürler :)</string>
 
     <string name="calculate">Hesapla</string>
 

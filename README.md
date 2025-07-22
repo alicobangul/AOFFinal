@@ -5,7 +5,7 @@ The application is a student grade calculation system. For courses where a midte
 
 <ul>
 <li>Java</li>
-<li>MVP</li>
+<li>MVVM - Clean Architecture</li>
 <li>RxJava</li>
 <li>Hilt</li>
 <li>Room</li>

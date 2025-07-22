@@ -1,36 +1,64 @@
 package basesoftware.com.aoffinal.domain.validator;
 
-import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
 import javax.inject.Inject;
-import dagger.hilt.android.scopes.ActivityScoped;
+import basesoftware.com.aoffinal.util.Constant;
+import dagger.hilt.android.scopes.ViewModelScoped;
 
-@ActivityScoped
+@ViewModelScoped
 public class Validator {
 
     @Inject
     public Validator() {}
 
-    public String selectOutput(int requiredScore, String calculateOutput, String failOutput) { return (requiredScore <= 100) ? calculateOutput : failOutput; }
+    public String validateNeededGrade(int neededGrade) { return String.valueOf((neededGrade <= 100) ? neededGrade : "KALDINIZ"); }
 
-    // Geçme notu boş veya 0'a eşit/küçük
-    public boolean averageError(@Nonnull String average) { return average.isEmpty() || Integer.parseInt(average) <= 0; }
+    public String validateRequiredQuestion(int neededGrade, int requiredQuestion) { return String.valueOf((neededGrade <= 100) ? requiredQuestion : "KALDINIZ"); }
 
-    // Vize ortalaması boş veya 0'a eşit/küçük
-    public boolean midtermError(@Nonnull String midterm) { return midterm.isEmpty() || Integer.parseInt(midterm) <= 0; }
+    public int validateDifficultyLevel(int neededGrade) { return (neededGrade <= 30) ? 1 : (neededGrade <= 50) ? 2 : 3; }
 
-    // Final ortalaması boş veya 0'a eşit/küçük
-    public boolean finalError(@Nonnull String finalScore) { return finalScore.isEmpty() || Integer.parseInt(finalScore) <= 0; }
+    public List<String> validateSettingsData(String midtermExamAverage, String finalExamAverage, String successAverage) {
 
-    // Vize + Final toplamı 100'e eşit mi ?
-    public boolean totalCourseGradeError(String midterm, String finalScore) { return (Integer.parseInt(midterm) + Integer.parseInt(finalScore) != 100); }
+        List<String> settingsData = List.of(midtermExamAverage, finalExamAverage, successAverage);
 
-    /**
-     * Vize/Final notu boş veya 0'a eşit/küçük,
-     * Veya Vize+Final toplamı 100'e eşit değil
-     */
-    public boolean examOrTotalError(String midtermExam, String finalExam) {
+        List<String> defaults = List.of(
+                Constant.DEFAULT_MIDTERM_EXAM_AVERAGE,
+                Constant.DEFAULT_FINAL_EXAM_AVERAGE,
+                Constant.DEFAULT_SUCCESS_AVERAGE);
+        List<String> results = new ArrayList<>();
 
-        return (midtermError(midtermExam) || finalError(finalExam)) || totalCourseGradeError(midtermExam, finalExam);
+        for (int i = 0; i < defaults.size(); i++) {
+            settingsData.size();
+            String value = settingsData.get(i) != null ? settingsData.get(i).trim() : "";
+            results.add(value.isEmpty() || value.equals("0") ? defaults.get(i) : value);
+        }
+
+        return results;
+
+    }
+
+    public String checkChangedSettingsData(String input) {
+        try {
+            double value = Double.parseDouble(input.trim());
+            int result = (int) Math.max(0, Math.min(value, 100));
+            return String.valueOf(result);
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+    public String checkChangedCourseData(String midtermExam) {
+
+        // Not verisi değiştiğinde [input - kullanıcı girişi] kontrol ediliyor
+
+        try {
+            String exam = (midtermExam == null) ? "" : midtermExam.trim();
+            if (exam.isEmpty() || exam.matches("(?!\\.$)(\\d{1,2}(\\.\\d+)?|100(\\.0+)?)")) return exam;
+            if (exam.equals(".")) return "";
+            return Double.parseDouble(exam) > 100 ? "100" : "";
+        }
+        catch (Exception e) { return ""; }
 
     }
 

@@ -5,9 +5,7 @@
 
     <data>
 
-        <variable name="trainingModel" type="basesoftware.com.aoffinal.domain.model.TrainingModel" />
-
-        <variable name="views" type="basesoftware.com.aoffinal.impl.IContract.IView" />
+        <variable name="mainViewModel" type="basesoftware.com.aoffinal.presentation.screens.MainViewModel" />
 
     </data>
 
@@ -15,8 +13,8 @@
         android:id="@+id/mainLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/appbackground"
-        tools:context=".view.MainActivity">
+        android:background="#FEDA49"
+        tools:context=".presentation.screens.MainActivity">
 
         <com.google.android.gms.ads.AdView
             android:id="@+id/adBanner"
@@ -29,243 +27,340 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/adBanner">
 
-            <androidx.legacy.widget.Space style="@style/allSpaceView" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintSettings"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/guidelineMainFirst"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <com.google.android.material.textfield.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/settingsLayout"
+                    android:hint="Vize Ort."
+                    app:helperText="Default - %30"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/guidelineSettingsOne"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        style="@style/settingsEditText"
+                        android:inputType="number"
+                        android:maxLength="3"
+                        android:onTextChanged="@{(text, start, before, count) -> mainViewModel.settingsTextChanged(text, 1)}"
+                        android:tag="-1"
+                        android:text="@{mainViewModel.state.getMidtermExamAverage}" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guidelineSettingsOne"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.33" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/settingsLayout"
+                    android:hint="Final Ort."
+                    app:helperText="Default - %70"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/guidelineSettingsTwo"
+                    app:layout_constraintStart_toStartOf="@+id/guidelineSettingsOne"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        style="@style/settingsEditText"
+                        android:inputType="number"
+                        android:maxLength="3"
+                        android:onTextChanged="@{(text, start, before, count) -> mainViewModel.settingsTextChanged(text, 2)}"
+                        android:tag="-2"
+                        android:text="@{mainViewModel.state.getFinalExamAverage}" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guidelineSettingsTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.66" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/settingsLayout"
+                    android:hint="Geçme Notu"
+                    app:helperText="Default - 40"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/guidelineSettingsTwo"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        style="@style/settingsEditText"
+                        android:inputType="number"
+                        android:maxLength="3"
+                        android:onTextChanged="@{(text, start, before, count) -> mainViewModel.settingsTextChanged(text, 3)}"
+                        android:tag="-3"
+                        android:text="@{mainViewModel.state.getSuccessAverage}" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineMainFirst"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Vize Ort."
-                android:minEms="7"
-                app:helperText="Default - %30"
-                app:helperTextEnabled="true">
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.13" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    style="@style/settingsEditText"
-                    android:dataListener="@{views}"
-                    android:maxLength="2"
-                    android:tag="-1"
-                    android:text="@{trainingModel.midtermExam}" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintData"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/guidelineMainSecond"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/guidelineMainFirst">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guidelineOne"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_percent="0.25" />
 
-            <androidx.legacy.widget.Space style="@style/allSpaceView" />
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guidelineTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_percent="0.5" />
 
-            <com.google.android.material.textfield.TextInputLayout
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guidelineThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_percent="0.75" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guidelineCenter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.5" />
+
+                <include
+                    layout="@layout/data_box"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:mainViewModel="@{mainViewModel}"
+                    app:courseIndex="@{1}"
+                    app:layout_constraintBottom_toTopOf="@+id/guidelineOne"
+                    app:layout_constraintEnd_toStartOf="@+id/guidelineCenter"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <include
+                    layout="@layout/data_box"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:mainViewModel="@{mainViewModel}"
+                    app:courseIndex="@{2}"
+                    app:layout_constraintBottom_toTopOf="@+id/guidelineOne"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/guidelineCenter"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <include
+                    layout="@layout/data_box"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:mainViewModel="@{mainViewModel}"
+                    app:courseIndex="@{3}"
+                    app:layout_constraintBottom_toTopOf="@+id/guidelineTwo"
+                    app:layout_constraintEnd_toStartOf="@+id/guidelineCenter"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/guidelineOne" />
+
+                <include
+                    layout="@layout/data_box"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:mainViewModel="@{mainViewModel}"
+                    app:courseIndex="@{4}"
+                    app:layout_constraintBottom_toTopOf="@+id/guidelineTwo"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/guidelineCenter"
+                    app:layout_constraintTop_toBottomOf="@+id/guidelineOne" />
+
+                <include
+                    layout="@layout/data_box"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:mainViewModel="@{mainViewModel}"
+                    app:courseIndex="@{5}"
+                    app:layout_constraintBottom_toTopOf="@+id/guidelineThree"
+                    app:layout_constraintEnd_toStartOf="@+id/guidelineCenter"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/guidelineTwo" />
+
+                <include
+                    layout="@layout/data_box"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:mainViewModel="@{mainViewModel}"
+                    app:courseIndex="@{6}"
+                    app:layout_constraintBottom_toTopOf="@+id/guidelineThree"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/guidelineCenter"
+                    app:layout_constraintTop_toBottomOf="@+id/guidelineTwo" />
+
+                <include
+                    layout="@layout/data_box"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:mainViewModel="@{mainViewModel}"
+                    app:courseIndex="@{7}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/guidelineCenter"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/guidelineThree" />
+
+                <include
+                    layout="@layout/data_box"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:mainViewModel="@{mainViewModel}"
+                    app:courseIndex="@{8}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/guidelineCenter"
+                    app:layout_constraintTop_toBottomOf="@+id/guidelineThree" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineMainSecond"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Final Ort."
-                android:minEms="7"
-                app:helperText="Default - %70"
-                app:helperTextEnabled="true">
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.90" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    style="@style/settingsEditText"
-                    android:dataListener="@{views}"
-                    android:maxLength="2"
-                    android:tag="-2"
-                    android:text="@{trainingModel.finalExam}" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintButtons"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/guidelineMainSecond">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnCalculate"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:backgroundTint="@color/actionButton"
+                    android:onClick="@{() -> mainViewModel.calculateClick()}"
+                    android:paddingLeft="0dp"
+                    android:paddingTop="0dp"
+                    android:paddingRight="0dp"
+                    android:paddingBottom="0dp"
+                    android:text="@string/calculate"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/guidelineCalculate"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.legacy.widget.Space style="@style/allSpaceView" />
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guidelineCalculate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.72" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="Geçme Notu"
-                android:minEms="7"
-                app:helperText="Default - 40"
-                app:helperTextEnabled="true">
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guidelineDelete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.74" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    style="@style/settingsEditText"
-                    android:dataListener="@{views}"
-                    android:maxLength="3"
-                    android:tag="-3"
-                    android:text="@{trainingModel.average}" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnDeleteDbData"
+                    style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="6"
+                    android:backgroundTint="@color/actionButton"
+                    android:onClick="@{() -> mainViewModel.deleteDbDataClick()}"
+                    android:paddingLeft="0dp"
+                    android:paddingTop="0dp"
+                    android:paddingRight="0dp"
+                    android:paddingBottom="0dp"
+                    app:icon="@drawable/ic_baseline_delete_forever_24"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:iconSize="30dp"
+                    app:iconTint="@android:color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/guidelineShareSpace"
+                    app:layout_constraintStart_toEndOf="@+id/guidelineDelete"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            </com.google.android.material.textfield.TextInputLayout>
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guidelineShareSpace"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.86" />
 
-            <androidx.legacy.widget.Space style="@style/allSpaceView" />
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guidelineShare"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.88" />
 
-        </LinearLayout>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnShare"
+                    style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="6"
+                    android:backgroundTint="@color/actionButton"
+                    android:onClick="@{() -> mainViewModel.shareClick()}"
+                    android:paddingLeft="0dp"
+                    android:paddingTop="0dp"
+                    android:paddingRight="0dp"
+                    android:paddingBottom="0dp"
+                    app:icon="@drawable/baseline_share_24"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:iconSize="30dp"
+                    app:iconTint="@android:color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/guidelineShare"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        <ScrollView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/linearBottom"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="vertical">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/allDataLayout"
-                    android:hint="Ders 1"
-                    app:helperText="@{trainingModel.arrayTrainingResult.get(0)}">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        style="@style/allDataEditText"
-                        android:dataListener="@{views}"
-                        android:tag="0"
-                        android:text="@{trainingModel.arrayTraining.get(0)}" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/allDataLayout"
-                    android:hint="Ders 2"
-                    app:helperText="@{trainingModel.arrayTrainingResult.get(1)}">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        style="@style/allDataEditText"
-                        android:dataListener="@{views}"
-                        android:tag="1"
-                        android:text="@{trainingModel.arrayTraining.get(1)}" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/allDataLayout"
-                    android:hint="Ders 3"
-                    app:helperText="@{trainingModel.arrayTrainingResult.get(2)}">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        style="@style/allDataEditText"
-                        android:layout_width="match_parent"
-                        android:dataListener="@{views}"
-                        android:tag="2"
-                        android:text="@{trainingModel.arrayTraining.get(2)}" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/allDataLayout"
-                    android:hint="Ders 4"
-                    app:helperText="@{trainingModel.arrayTrainingResult.get(3)}">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        style="@style/allDataEditText"
-                        android:dataListener="@{views}"
-                        android:tag="3"
-                        android:text="@{trainingModel.arrayTraining.get(3)}" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/allDataLayout"
-                    android:hint="Ders 5"
-                    app:helperText="@{trainingModel.arrayTrainingResult.get(4)}">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        style="@style/allDataEditText"
-                        android:dataListener="@{views}"
-                        android:tag="4"
-                        android:text="@{trainingModel.arrayTraining.get(4)}" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/allDataLayout"
-                    android:hint="Ders 6"
-                    app:helperText="@{trainingModel.arrayTrainingResult.get(5)}">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        style="@style/allDataEditText"
-                        android:dataListener="@{views}"
-                        android:tag="5"
-                        android:text="@{trainingModel.arrayTraining.get(5)}" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/allDataLayout"
-                    android:hint="Ders 7"
-                    app:helperText="@{trainingModel.arrayTrainingResult.get(6)}">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        style="@style/allDataEditText"
-                        android:dataListener="@{views}"
-                        android:tag="6"
-                        android:text="@{trainingModel.arrayTraining.get(6)}" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/allDataLayout"
-                    android:hint="Ders 8"
-                    app:helperText="@{trainingModel.arrayTrainingResult.get(7)}">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        style="@style/allDataEditText"
-                        android:dataListener="@{views}"
-                        android:tag="7"
-                        android:text="@{trainingModel.arrayTraining.get(7)}" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
-        </ScrollView>
-
-        <LinearLayout
-            android:id="@+id/linearBottom"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnCalculate"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="5dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/actionButton"
-                android:paddingLeft="0dp"
-                android:paddingTop="0dp"
-                android:paddingRight="0dp"
-                android:paddingBottom="0dp"
-                android:text="@string/calculate"
-                android:textColor="@android:color/white"
-                android:textSize="20sp" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnClearData"
-                style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="6"
-                android:backgroundTint="@color/actionButton"
-                android:paddingLeft="0dp"
-                android:paddingTop="0dp"
-                android:paddingRight="0dp"
-                android:paddingBottom="0dp"
-                app:icon="@drawable/ic_baseline_delete_forever_24"
-                app:iconGravity="textStart"
-                app:iconPadding="0dp"
-                app:iconSize="30dp"
-                app:iconTint="@android:color/white" />
-
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

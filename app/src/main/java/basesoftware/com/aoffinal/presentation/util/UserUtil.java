@@ -1,11 +1,9 @@
-package basesoftware.com.aoffinal.util;
+package basesoftware.com.aoffinal.presentation.util;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 import com.google.android.gms.tasks.Task;
@@ -14,6 +12,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.appupdate.AppUpdateManager;
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.appupdate.AppUpdateOptions;
 import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.android.play.core.review.ReviewManager;
@@ -21,20 +20,16 @@ import com.google.android.play.core.review.ReviewManagerFactory;
 import javax.inject.Inject;
 import basesoftware.com.aoffinal.R;
 import basesoftware.com.aoffinal.databinding.QuestionSnackbarBinding;
-import basesoftware.com.aoffinal.impl.IContract;
+import basesoftware.com.aoffinal.domain.callback.ResultCallBack;
 import dagger.hilt.android.scopes.ActivityScoped;
 
 @ActivityScoped
-public class WorkUtil {
+public class UserUtil {
 
     private final Activity activity;
 
-    private IContract.IView view;
-
     @Inject
-    public WorkUtil(Activity activity) { this.activity = activity; }
-
-    public void initBinds(IContract.IView view) { this.view = view; }
+    public UserUtil(Activity activity) { this.activity = activity; }
 
     public void showSnackbar(String message) {
 
@@ -44,10 +39,10 @@ public class WorkUtil {
                     public void onDismissed(Snackbar transientBottomBar, int event) {
                         super.onDismissed(transientBottomBar, event);
 
-                        boolean isSaveInfo = message.equals(activity.getString(R.string.saveSuccess))
-                                || message.equals(activity.getString(R.string.saveFailed));
+                        String saveSuccess = activity.getString(R.string.saveSuccess);
+                        String saveFailed = activity.getString(R.string.saveFailed);
 
-                        if (isSaveInfo) inAppReview();
+                        if (message.equals(saveSuccess) || message.equals(saveFailed)) inAppReview();
 
                     }
                 })
@@ -84,7 +79,7 @@ public class WorkUtil {
 
     }
 
-    public void inAppUpdate() {
+    public void inAppUpdate(ResultCallBack<Void> callback) {
 
         final int IMMEDIATE = AppUpdateType.IMMEDIATE;
         final int UPDATE_AVAILABLE = UpdateAvailability.UPDATE_AVAILABLE;
@@ -97,19 +92,26 @@ public class WorkUtil {
             if(task.isSuccessful() && task.getResult().updateAvailability() == UPDATE_AVAILABLE && task.getResult().isUpdateTypeAllowed(IMMEDIATE)) {
 
                 // IMMEDIATE türünde güncellemeyi başlat
-                try { appUpdateManager.startUpdateFlowForResult(task.getResult(), IMMEDIATE, activity, 11); }
+                try {
+                    appUpdateManager.startUpdateFlowForResult(
+                            task.getResult(),
+                            activity,
+                            AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE).build(),
+                            11
+                    );
+                }
 
                 catch (IntentSender.SendIntentException e) {
 
                     e.getStackTrace();
 
-                    view.checkSavedDataInDb();
+                    callback.onSuccess(null);
 
                 }
 
             }
 
-            else view.checkSavedDataInDb();
+            else callback.onSuccess(null);
 
         });
 
@@ -127,27 +129,24 @@ public class WorkUtil {
 
                         reviewManager.launchReviewFlow(activity, task.getResult()).addOnCompleteListener(result -> {
 
-                            if (result.isSuccessful()) showSnackbar(activity.getString(R.string.thanksForComment));
+                            if (result.isSuccessful()) Log.i("APPREVIEW_SUCCESS", "UserUtil_inAppReview() / YORUM / Uygulama yorumu başarılı");
 
-                            else view.visitStoreQuestion();
+                            else Log.i("APPREVIEW_FAIL", "UserUtil_inAppReview() / YORUM / Uygulama yorumu başarısız");
 
                         });
 
                     }
 
-                    else view.visitStoreQuestion();
-
                 });
 
     }
 
-    public void visitStorePage(String appPageLink) {
+    public void openShareAppDialog() {
 
-        Uri link = Uri.parse(appPageLink);
-
-        try { activity.startActivity(new Intent(Intent.ACTION_VIEW, link).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)); }
-
-        catch (ActivityNotFoundException e) { Log.e("WorkUtil - Error", "Play store açılamadı"); }
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT, activity.getString(R.string.app_market_page_link));
+        activity.startActivity(Intent.createChooser(intent, "Uygulamayı Paylaş"));
 
     }
 
